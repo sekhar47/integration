@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Details</title>
+    <link rel="stylesheet" type="text/css" href="/css/employees.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- Include jsPDF library from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script>
+        function filterTable() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("employeeTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                var found = false;
+                for (j = 0; j < tr[i].cells.length; j++) {
+                    td = tr[i].getElementsByTagName("td")[j];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                tr[i].style.display = found || i === 0 ? "" : "none";
+            }
+        }
+
+        function downloadDetails() {
+            var element = document.getElementById('employeeTable');
+
+            // Create a clone of the table to avoid modifying the original table
+            var cloneTable = element.cloneNode(true);
+
+            // Remove any unwanted elements or attributes from the clone (if needed)
+            // For example, you might want to remove the "id" attribute to prevent duplicate IDs
+            cloneTable.removeAttribute("id");
+
+            // Apply additional styling if necessary
+            cloneTable.style.borderCollapse = 'collapse'; // Add border-collapse style to the cloned table
+
+            // Convert the cloned table to PDF
+            html2pdf(cloneTable);
+        }
+    </script>
+</head>
+<body>
+
+<h2 class="animate__animated animate__bounceInDown">Employee Details</h2>
+
+<input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search" class="animate__animated animate__fadeInDown">
+
+<form th:action="@{/admin/searchEmployees}" method="get" class="animate__animated animate__fadeInUp">
+    <label>Search by EmpID:</label>
+    <input type="text" name="empid"/>
+    
+    <label>Search by Skill Name:</label>
+    <input type="text" name="skillname"/>
+    
+    <label>Search by Domain:</label>
+    <input type="text" name="domain"/>
+    
+    <label>Search by Subdomain:</label>
+    <input type="text" name="subdomain"/>
+    
+    <label>Search by Proficiency:</label>
+    <input type="text" name="proficiency"/>
+
+    <button type="submit" class="animate__animated animate__fadeInRight">Search</button>
+</form>
+
+<button onclick="downloadDetails()" class="animate__animated animate__fadeInLeft">Download Details</button>
+
+<table border="1" id="employeeTable" class="animate__animated animate__fadeIn">
+    <thead>
+    <tr>
+        <th>Employee ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Skill Name</th>
+        <th>Domain</th>
+        <th>Subdomain</th>
+        <th>Proficiency</th>
+        <th>Availability</th>
+        <th>Reviewed</th>
+        <th>Training Days</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.empid}"></td>
+        <td th:text="${employee.name}"></td>
+        <td th:text="${employee.empemail}"></td>
+        <td th:text="${employee.empmobile}"></td>
+        <td th:text="${employee.skillname}"></td>
+        <td th:text="${employee.domain}"></td>
+        <td th:text="${employee.subdomain}"></td>
+        <td th:text="${employee.proficiency}"></td>
+        <td th:text="${employee.availability} ? 'Yes' : 'No'"></td>
+        <td th:text="${employee.reviewed} ? 'Yes' : 'No'"></td>
+        <td th:text="${employee.trainingdays}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Subdomain</title>
+</head>
+<body>
+    <h2>Create Subdomain</h2>
+    
+    <!-- Display error message if it exists in the model -->
+    <div th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/saveSubdomain}" method="post">
+        <label for="domain">Select Domain:</label>
+        <select id="domain" name="domain">
+            <option th:each="domain : ${domains}" th:value="${domain}" th:text="${domain}"></option>
+        </select>
+        <br>
+        
+        <label for="subdomain">Subdomain:</label>
+        <input type="text" id="subdomain" name="subdomain" required>
+        <br>
+        
+        <input type="submit" value="Create Subdomain">
+    </form>
+    
+    <a th:href="@{/viewSkillsPage}">Back to View Skills</a>
+</body>
+</html>

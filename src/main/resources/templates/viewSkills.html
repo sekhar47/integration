@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Skills</title>
+</head>
+<body>
+    <h2>View Skills</h2>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Skill ID</th>
+                <th>Skill Name</th>
+                <th>Subdomain</th>
+                <th>Domain</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="skill : ${skills}">
+                <td th:text="${skill.skillid}"></td>
+                <td th:text="${skill.skillname}"></td>
+                <td th:text="${skill.subdomain}"></td>
+                <td th:text="${skill.domain}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <a th:href="@{/createDomainPage}">Create Domain</a>
+    <a th:href="@{/createSubdomainPage}">Create Subdomain</a>
+    <a th:href="@{/createSkillPage}">Create Skill</a>
+    <a th:href="@{/updateSkillPage}">Update Skill</a>
+    <a th:href="@{/deleteSkillPage}">Delete Skill</a>
+</body>
+</html>

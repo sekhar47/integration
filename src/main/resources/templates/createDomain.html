@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Domain</title>
+</head>
+<body>
+    <h2>Create Domain</h2>
+    
+    <form th:action="@{/saveDomain}" method="post">
+        <label for="domain">Domain:</label>
+        <input type="text" id="domain" name="domain" required>
+        <br>
+        
+        <input type="submit" value="Create Domain">
+    </form>
+    
+    <a th:href="@{/viewSkillsPage}">Back to View Skills</a>
+</body>
+</html>

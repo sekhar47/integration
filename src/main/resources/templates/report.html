@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/report.css">
+    
+    <title>Employee Report</title>
+</head>
+<body>
+    <h2>Employee Report</h2>
+
+<video id="background-video" autoplay loop muted>
+    <source src="path/to/your-video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>EmpID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Skill Name</th>
+                <th>Domain</th>
+                <th>Subdomain</th>
+                <th>Proficiency</th>
+                <th>Availability</th>
+                <th>Reviewed</th>
+                <th>Training Days</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through employees and display data -->
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.empid}"></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.empemail}"></td>
+                <td th:text="${employee.empmobile}"></td>
+                <td th:text="${employee.skillname}"></td>
+                <td th:text="${employee.domain}"></td>
+                <td th:text="${employee.subdomain}"></td>
+                <td th:text="${employee.proficiency}"></td>
+                <td th:text="${employee.availability} ? 'Yes' : 'No'"></td>
+                <td th:text="${employee.reviewed} ? 'Yes' : 'No'"></td>
+                <td th:text="${employee.trainingdays}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a th:href="@{/admin/report/download}" class="btn btn-primary">Download Report</a>
+</body>
+</html>
