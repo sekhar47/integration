@@ -7,39 +7,90 @@
 <body>
 <h1>User Skills</h1>
 
-<table border="1">
-    <tr>
-        <th>Domain</th>
-        <th>Subdomain</th>
-        <th>Skill Name</th>
-        <th>Proficiency</th>
-        <th>Certification Name</th>
-        <th>Training Days</th>
-        <th>Action</th> <!-- Add Action column for delete button -->
-    </tr>
-    <tr th:each="skill : ${userSkills}">
-        <td th:text="${skill.domain}"></td>
-        <td th:text="${skill.subdomain}"></td>
-        <td th:text="${skill.skillname}"></td>
-        <td th:text="${skill.proficiency}"></td>
-        <td th:text="${skill.certificationname}"></td>
-        <td th:text="${skill.trainingdays}"></td>
-        <td>
-            <!-- Add onclick event to call confirmDelete() -->
-            <form th:action="@{/user/delete-skill}" method="post" onsubmit="return confirmDelete()">
-                <input type="hidden" name="skillid" th:value="${skill.skillid}"/>
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-    </tr>
-</table>
+<nav>
+    <button onclick="window.location.href='/user/add-skill'">Add Skill</button>
+    <button onclick="window.location.href='/user-page'">Dashboard</button>
+</nav>
 
-<!-- JavaScript for Confirmation Dialog -->
+<form id="deleteForm" th:action="@{/user/delete-skills}" method="post">
+    <table border="1">
+        <tr>
+            <th>Select</th>
+            <th>Domain</th>
+            <th>Subdomain</th>
+            <th>Skill Name</th>
+            <th>Proficiency</th>
+            <th>Certification Name</th>
+            <th>Training Days</th>
+            <th>Actions</th> <!-- New column for update button -->
+        </tr>
+        <tr th:each="skill : ${userSkills}">
+            <td>
+                <input type="checkbox" name="skillIds" th:value="${skill.skillid}"/>
+            </td>
+            <td th:text="${skill.domain}"></td>
+            <td th:text="${skill.subdomain}"></td>
+            <td th:text="${skill.skillname}"></td>
+            <td th:text="${skill.proficiency}"></td>
+            <td th:text="${skill.certificationname}"></td>
+            <td th:text="${skill.trainingdays}"></td>
+<td>
+    <button type="button" onclick="updateSkill(/*[[${skill.skillid}]]*/)">Update</button>
+</td>
+
+
+
+        </tr>
+    </table>
+
+    <button type="button" onclick="confirmDelete()">Delete Selected</button>
+</form>
+
+<!-- Error message section -->
+<p id="errorMessage" style="color: red; display: none;">Please select at least one skill to delete.</p>
+
+<!-- JavaScript for Form Submission -->
 <script th:inline="javascript">
     function confirmDelete() {
-        // Display a confirmation dialog
-        return confirm("Are you sure you want to delete this skill?");
+        // Check if any checkbox is checked
+        var checkboxes = document.getElementsByName('skillIds');
+        var atLeastOneChecked = false;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                atLeastOneChecked = true;
+                break;
+            }
+        }
+        
+        // If at least one checkbox is checked, ask for confirmation
+        if (atLeastOneChecked) {
+            if (confirm("Are you sure you want to delete selected skills?")) {
+                document.getElementById('deleteForm').submit();
+            }
+        } else {
+            // Show error message
+            document.getElementById('errorMessage').style.display = 'block';
+            // Hide error message after 3 seconds (3000 milliseconds)
+            setTimeout(function() {
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 1500);
+        }
     }
 </script>
+
+<script th:inline="javascript">
+    function updateSkill(skillId) {
+        // Check if skillId is defined and not null
+        if (skillId !== undefined && skillId !== null) {
+            // Redirect to the update page with the skillId parameter
+            window.location.href = '/user/update-skill?skillId=' + skillId;
+        } else {
+            // Log an error or handle the case where skillId is not valid
+            console.error('Invalid skillId:', skillId);
+        }
+    }
+</script>
+
+
 </body>
 </html>

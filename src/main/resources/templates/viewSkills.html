@@ -3,33 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <title>View Skills</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <h2>View Skills</h2>
     
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Skill ID</th>
-                <th>Skill Name</th>
-                <th>Subdomain</th>
-                <th>Domain</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="skill : ${skills}">
-                <td th:text="${skill.skillid}"></td>
-                <td th:text="${skill.skillname}"></td>
-                <td th:text="${skill.subdomain}"></td>
-                <td th:text="${skill.domain}"></td>
-            </tr>
-        </tbody>
-    </table>
+    <form th:action="@{/deleteSkills}" method="post">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Skill ID</th>
+                    <th>Skill Name</th>
+                    <th>Subdomain</th>
+                    <th>Domain</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+             <tr th:each="skill : ${skills}">
+    <td><input type="checkbox" th:value="${skill.skillid}" name="skillsToDelete"></td>
+    <td><span th:text="${skill.skillid}"></span></td>
+    <td><span th:text="${skill.skillname}"></span></td>
+    <td><span th:text="${skill.subdomain}"></span></td>
+    <td><span th:text="${skill.domain}"></span></td>
+    <!-- Add button to trigger update modal -->
+    <td><button type="button" class="btn btn-primary update-btn" data-toggle="modal" data-target="#updateModal" data-skill-id="${skill.skillid}" data-skill-name="${skill.skillname}">Update</button></td>
+</tr>
+
+            </tbody>
+        </table>
+        
+        <button type="submit">Delete Selected</button>
+    </form>
+    
+    <div class="modal-body">
+    <form id="updateForm" th:action="@{/updateSkill}" method="post">
+        <input type="hidden" id="update-skill-id" name="skillid"/>
+        <div class="form-group">
+            <label for="update-skill-name">Skill Name:</label>
+            <input type="text" class="form-control" id="update-skill-name" name="skillname"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
+
+    <!-- Update Skill Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Skill</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateForm" th:action="@{/updateSkill}" method="post">
+                        <input type="hidden" id="update-skill-id" name="skillid"/>
+                        <div class="form-group">
+                            <label for="update-skill-name">Skill Name:</label>
+                            <input type="text" class="form-control" id="update-skill-name" name="skillname"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     
     <a th:href="@{/createDomainPage}">Create Domain</a>
     <a th:href="@{/createSubdomainPage}">Create Subdomain</a>
     <a th:href="@{/createSkillPage}">Create Skill</a>
     <a th:href="@{/updateSkillPage}">Update Skill</a>
-    <a th:href="@{/deleteSkillPage}">Delete Skill</a>
+    
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+  <script th:inline="javascript">
+    $(document).ready(function() {
+        $('.update-btn').click(function() {
+            var skillId = $(this).data('skill-id');
+            var skillName = $(this).data('skill-name');
+            $('#update-skill-id').val(skillId);  // Set skillid input field value
+            $('#update-skill-name').val(skillName);
+        });
+    });
+</script>
+
 </body>
 </html>

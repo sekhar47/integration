@@ -47,46 +47,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .map(this::mapToEmployeeDetailsDTO)
                 .collect(Collectors.toList());
     }
-//
-//    @Override
-//    public List<EmployeeDetailsDTO> findBySkillname(String skillname) {
-//        List<EmployeeSkill> employeeSkills = employeeSkillRepository.findBySkillsSkillname(skillname);
-//        return employeeSkills.stream()
-//                .map(this::mapToEmployeeDetailsDTO)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<EmployeeDetailsDTO> findByDomain(String domain) {
-//        List<EmployeeSkill> employeeSkills = employeeSkillRepository.findBySkillsDomain(domain);
-//        return employeeSkills.stream()
-//                .map(this::mapToEmployeeDetailsDTO)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<EmployeeDetailsDTO> findBySubdomain(String subdomain) {
-//        List<EmployeeSkill> employeeSkills = employeeSkillRepository.findBySkillsSubdomain(subdomain);
-//        return employeeSkills.stream()
-//                .map(this::mapToEmployeeDetailsDTO)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public List<EmployeeDetailsDTO> findByProficiency(String proficiency) {
-//        List<EmployeeSkill> employeeSkills = employeeSkillRepository.findByProficiency(proficiency);
-//        return employeeSkills.stream()
-//                .map(this::mapToEmployeeDetailsDTO)
-//                .collect(Collectors.toList());
-//    }
 
-    
-  
-    
-    
-    
-    
-    
+
     
 //    filter
     @Override

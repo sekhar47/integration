@@ -92,59 +92,9 @@ public class SkillController {
     }
 
 
-    @GetMapping("/updateSkill")
-    public String showUpdateSkillPage(Model model) {
-        List<String> domains = service.getDomains();
-        model.addAttribute("domains", domains);
-
-        // Check if a domain is selected
-        String selectedDomain = (String) model.getAttribute("selectedDomain");
-        if (selectedDomain != null) {
-            List<String> subdomains = service.getSubdomainsByDomain(selectedDomain);
-            model.addAttribute("subdomains", subdomains);
-
-            // Check if a subdomain is selected
-            String selectedSubdomain = (String) model.getAttribute("selectedSubdomain");
-            if (selectedSubdomain != null) {
-                List<String> skillNames = service.getSkillNamesBySubdomain(selectedSubdomain);
-                model.addAttribute("skillNames", skillNames);
-            }
-        }
-
-        model.addAttribute("updateSkillForm", new UpdateSkillForm());
-
-        return "updateSkill";
-    }
-    @PostMapping("/updateSkill")
-    public String updateSkillName(UpdateSkillForm updateSkillForm, Model model) {
-        String domain = updateSkillForm.getDomain();
-        String subdomain = updateSkillForm.getSubdomain();
-        String oldSkillName = updateSkillForm.getSkillName();
-        String newSkillName = updateSkillForm.getNewSkillName();
-
-        service.updateSkillName(domain, subdomain, oldSkillName, newSkillName);
-
-        // Redirect to the update skill page after successful update
-        return "redirect:/updateSkill";
-    }
-
     
-    @GetMapping("/deleteSkillPage")
-    public String deleteSkillPage(@RequestParam("skillname") String skillName, Model model) {
-        Skills skill = service.getSkillByName(skillName);
-        model.addAttribute("skill", skill);
-        return "deleteSkill";
-    }
-
-    @PostMapping("/deleteSkill")
-    public String deleteSkill(@RequestParam("skillname") String skillName) {
-        Skills skill = service.getSkillByName(skillName);
-        if (skill != null) {
-            service.deleteSkill(skill.getSkillid());
-        }
-        return "redirect:/viewSkillsPage";
-    }
-
+ 
+ 
     @GetMapping("/getSubdomains/{domain}")
     @ResponseBody
     public List<String> getSubdomainsByDomain(@PathVariable String domain) {
@@ -180,5 +130,27 @@ public class SkillController {
         service.saveSubdomain(domain, subdomain);
         return "redirect:/viewSkillsPage";
     }
+
+//    delete skill
+    @PostMapping("/deleteSkills")
+    public String deleteSkills(@RequestParam("skillsToDelete") List<Integer> skillIds) {
+        // Iterate through the list of skillIds and delete each skill
+        for (Integer skillId : skillIds) {
+            service.deleteSkill(skillId);
+        }
+        return "redirect:/viewSkillsPage";
+    }
+    
+//    update skill
+    @PostMapping("/updateSkill")
+    public String updateSkill(@RequestParam("skillid") Integer skillId, @RequestParam("skillname") String skillName) {
+        Skills existingSkill = service.getSkillById(skillId);
+        if (existingSkill != null) {
+            existingSkill.setSkillname(skillName);
+            service.saveSkill(existingSkill);
+        }
+        return "redirect:/viewSkillsPage";
+    }
+
 
 }

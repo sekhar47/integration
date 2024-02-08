@@ -2,6 +2,7 @@ package com.example.entity;
 
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -28,11 +29,11 @@ public class EmployeeSkill {
 	@EmbeddedId
     private EmpID id;
 
-	    @ManyToOne
+		@ManyToOne
 	    @JoinColumn(name = "empid", insertable = false, updatable = false)
 	    private User user;
 
-	    @ManyToOne
+	 	@ManyToOne
 	    @JoinColumn(name = "skillid", insertable = false, updatable = false)
 	    private Skills skills;
 

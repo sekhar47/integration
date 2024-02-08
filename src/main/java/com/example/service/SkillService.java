@@ -30,11 +30,6 @@ public class SkillService {
 		return repository.findBySkillname(skillname).orElse(null);
 	}
 
-	public String deleteSkill(int skillid)
-	{
-		repository.deleteById(skillid);
-		return "Skill removed!! "+ skillid;
-	}
 
 	
 	// Save a single subdomain
@@ -70,30 +65,7 @@ public class SkillService {
 	    }
 
 
-    // Update an existing skill
-	 public void updateSkillName(Integer skillId, String newSkillName) {
-	        // Retrieve the skill from the database
-	        Skills skill = repository.findById(skillId).orElse(null);
-
-	        // Update the skill name
-	        if (skill != null) {
-	            skill.setSkillname(newSkillName);
-	            repository.save(skill);
-	        }
-	    }
-
-	 public Skills updateSkill(Skills skill) {
-	        Skills existingUser = repository.findById(skill.getSkillid()).orElse(null);
-	        if (existingUser != null) {
-	            existingUser.setSkillname(skill.getSkillname());
-	            existingUser.setSubdomain(skill.getSubdomain());
-	            existingUser.setDomain(skill.getDomain());
-	            return repository.save(existingUser);
-	        }
-	        return null;
-	    }
-	 
-	 
+   
 	
     public List<Skills> findByDomain(String domain) {
         return repository.findByDomain(domain);
@@ -165,7 +137,15 @@ public class SkillService {
     }
     
     
+    public String deleteSkill(int skillid) {
+        repository.deleteById(skillid);
+        return "Skill removed!! " + skillid;
+    }
     
+    public void updateSkill(Skills skill) {
+        repository.save(skill);
+    }
+
     
     
 }

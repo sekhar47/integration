@@ -1,14 +1,18 @@
 package com.example.userskill;
 
 import com.example.dto.EmployeeDetailsDTO;
+import com.example.entity.EmployeeSkill;
 import com.example.entity.Skills;
 import com.example.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -93,22 +97,12 @@ public class UserSkillController {
 
     
     // Method to handle skill deletion
-    @PostMapping("/delete-skill")
-    public String deleteSkill(@RequestParam("skillid") Integer skillid,
-                              Principal principal) {
+
+    @PostMapping("/delete-skills")
+    public String deleteSkills(@RequestParam("skillIds") List<Integer> skillIds, Principal principal) {
         String empId = principal.getName();
-        userSkillService.deleteUserSkill(empId, skillid);
+        userSkillService.deleteUserSkills(empId, skillIds);
         return "redirect:/user/manageskills";
     }
-
-//    update userdkill
-
-    @PostMapping("/update-skill")
-    public String updateSkill(@ModelAttribute("skillDTO") EmployeeDetailsDTO skillDTO) {
-        // Call the service method to update the skill
-        userSkillService.updateSkill(skillDTO);
-        return "redirect:/user/manageskills"; // Redirect to the manage skills page after updating
-    }
     
-
 }

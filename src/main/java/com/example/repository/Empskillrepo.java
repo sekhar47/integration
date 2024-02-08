@@ -52,4 +52,10 @@ public interface Empskillrepo extends JpaRepository<EmployeeSkill, EmpID>{
     void deleteById_EmpidAndId_Skillid(String empid, Integer skillid);
 
 
+    List<EmployeeSkill> findById_Skillid(Integer skillId);
+
+    Optional<EmployeeSkill> findById_EmpidAndId_Skillid(String empId, Integer skillId);
+    Optional<EmployeeSkill> findById(EmpID id);
+
+    
 }

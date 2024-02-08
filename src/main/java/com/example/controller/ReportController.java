@@ -3,6 +3,12 @@ package com.example.controller;
 
 import com.example.dto.EmployeeDetailsDTO;
 import com.example.service.EmployeeService;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +31,7 @@ public class ReportController {
     @Autowired
     public ReportController(EmployeeService employeeService) {
         this.employeeService = employeeService;
+        
     }
 
    
@@ -45,35 +52,50 @@ public class ReportController {
         return "report"; // This corresponds to the filename of your HTML for the report page
     }
 
-    
-    @GetMapping("/download")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void downloadReport(
-            @RequestParam(required = false) String empid,
-            HttpServletResponse response
-    ) throws IOException {
-        // Get the data for the specified empid
-        List<EmployeeDetailsDTO> employees = employeeService.findByEmpid(empid);
+	/*
+	 * @GetMapping("/download")
+	 * 
+	 * @PreAuthorize("hasRole('ADMIN')") public void downloadReport(
+	 * 
+	 * @RequestParam(required = false) String empid, HttpServletResponse response )
+	 * throws IOException, DocumentException { // Get the data for the specified
+	 * empid List<EmployeeDetailsDTO> employees =
+	 * employeeService.findByEmpid(empid);
+	 * 
+	 * // Set response headers response.setContentType("application/pdf");
+	 * response.setHeader("Content-Disposition",
+	 * "attachment; filename=employee_report.pdf");
+	 * 
+	 * // Create PDF document Document document = new Document();
+	 * PdfWriter.getInstance(document, response.getOutputStream()); document.open();
+	 * 
+	 * // Add title Paragraph title = new Paragraph("Employee Report");
+	 * title.setAlignment(Paragraph.ALIGN_CENTER); document.add(title);
+	 * document.add(new Paragraph("\n"));
+	 * 
+	 * // Create PDF table PdfPTable table = new PdfPTable(11); // 11 columns for
+	 * each field
+	 * 
+	 * // Add table headers table.addCell("EmpID"); table.addCell("Name");
+	 * table.addCell("Email"); table.addCell("Mobile"); table.addCell("Skill Name");
+	 * table.addCell("Domain"); table.addCell("Subdomain");
+	 * table.addCell("Proficiency"); table.addCell("Availability");
+	 * table.addCell("Reviewed"); table.addCell("Training Days");
+	 * 
+	 * // Add data rows for (EmployeeDetailsDTO employee : employees) {
+	 * table.addCell(employee.getEmpid()); table.addCell(employee.getName());
+	 * table.addCell(employee.getEmpemail());
+	 * table.addCell(employee.getEmpmobile());
+	 * table.addCell(employee.getSkillname()); table.addCell(employee.getDomain());
+	 * table.addCell(employee.getSubdomain());
+	 * table.addCell(employee.getProficiency());
+	 * table.addCell(employee.isAvailability() ? "Yes" : "No");
+	 * table.addCell(employee.isReviewed() ? "Yes" : "No");
+	 * table.addCell(String.valueOf(employee.getTrainingdays())); }
+	 * 
+	 * // Add table to document document.add(table);
+	 * 
+	 * // Close document document.close(); }
+	 */
 
-        // You can use a CSV library (e.g., OpenCSV) to write data to a CSV file
-        // For simplicity, I'll use a basic CSV string here
-        StringBuilder csvContent = new StringBuilder();
-        // Append CSV headers
-        csvContent.append("EmpID,Name,Email,Mobile,SkillName,Domain,Subdomain,Proficiency,Availability,Reviewed,TrainingDays\n");
-        // Append data
-        for (EmployeeDetailsDTO employee : employees) {
-            csvContent.append(String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-                    employee.getEmpid(), employee.getName(), employee.getEmpemail(),
-                    employee.getEmpmobile(), employee.getSkillname(), employee.getDomain(),
-                    employee.getSubdomain(), employee.getProficiency(), employee.isAvailability(),
-                    employee.isReviewed(), employee.getTrainingdays()));
-        }
-
-        // Set response headers
-        response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=employee_report.csv");
-
-        // Write CSV content to the response
-        response.getWriter().write(csvContent.toString());
-    }
 }

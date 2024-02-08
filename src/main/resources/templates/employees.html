@@ -5,52 +5,7 @@
     <title>Employee Details</title>
     <link rel="stylesheet" type="text/css" href="/css/employees.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-    <!-- Include jsPDF library from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
-    <script>
-        function filterTable() {
-            var input, filter, table, tr, td, i, j, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("employeeTable");
-            tr = table.getElementsByTagName("tr");
-
-            for (i = 0; i < tr.length; i++) {
-                var found = false;
-                for (j = 0; j < tr[i].cells.length; j++) {
-                    td = tr[i].getElementsByTagName("td")[j];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-                tr[i].style.display = found || i === 0 ? "" : "none";
-            }
-        }
-
-        function downloadDetails() {
-            var element = document.getElementById('employeeTable');
-
-            // Create a clone of the table to avoid modifying the original table
-            var cloneTable = element.cloneNode(true);
-
-            // Remove any unwanted elements or attributes from the clone (if needed)
-            // For example, you might want to remove the "id" attribute to prevent duplicate IDs
-            cloneTable.removeAttribute("id");
-
-            // Apply additional styling if necessary
-            cloneTable.style.borderCollapse = 'collapse'; // Add border-collapse style to the cloned table
-
-            // Convert the cloned table to PDF
-            html2pdf(cloneTable);
-        }
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -111,6 +66,60 @@
     </tr>
     </tbody>
 </table>
+
+<script>
+    function filterTable() {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("employeeTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            var found = false;
+            for (j = 0; j < tr[i].cells.length; j++) {
+                td = tr[i].getElementsByTagName("td")[j];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            tr[i].style.display = found || i === 0 ? "" : "none";
+        }
+    }
+
+    function downloadDetails() {
+        var element = document.getElementById('employeeTable');
+        var rows = element.getElementsByTagName('tr');
+        var data = [];
+
+        // Get column headers
+        var headers = [];
+        for (var i = 0; i < rows[0].cells.length; i++) {
+            headers.push(rows[0].cells[i].textContent.trim());
+        }
+        data.push(headers);
+
+        // Get data rows
+        for (var i = 1; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName('td');
+            var rowData = [];
+            for (var j = 0; j < cells.length; j++) {
+                rowData.push(cells[j].textContent.trim());
+            }
+            data.push(rowData);
+        }
+
+        // Create Excel file
+        var wb = XLSX.utils.book_new();
+        var ws = XLSX.utils.aoa_to_sheet(data);
+        XLSX.utils.book_append_sheet(wb, ws, "Employee Details");
+        XLSX.writeFile(wb, "employee_details.xlsx");
+    }
+</script>
 
 </body>
 </html>

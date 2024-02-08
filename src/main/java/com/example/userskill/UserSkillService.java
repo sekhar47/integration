@@ -142,32 +142,16 @@ public class UserSkillService {
     }
 
 	 
-    
 
-    // Method to delete a user skill by skill id and emp id
     @Transactional
-    public void deleteUserSkill(String empid, Integer skillid) {
-    	employeeSkillRepository.deleteById_EmpidAndId_Skillid(empid, skillid);
+    public void deleteUserSkills(String empId, List<Integer> skillIds) {
+        for (Integer skillId : skillIds) {
+            employeeSkillRepository.deleteById_EmpidAndId_Skillid(empId, skillId);
+        }
     }
 
 
-@Transactional
-public void updateSkill(EmployeeDetailsDTO skillDTO) {
-    // Retrieve the existing skill entity by ID
-    Optional<EmployeeSkill> optionalSkill = employeeSkillRepository.findById(new EmpID(skillDTO.getEmpid(), skillDTO.getSkillid()));
-    if (optionalSkill.isPresent()) {
-        EmployeeSkill skill = optionalSkill.get();
-        
-        // Update the skill details with the provided DTO values
-        skill.setProficiency(skillDTO.getProficiency());
-        skill.setCertificationname(skillDTO.getCertificationname());
-        skill.setTrainingdays(skillDTO.getTrainingdays());
-        
-        // Save the updated skill entity
-        employeeSkillRepository.save(skill);
-    } else {
-        throw new RuntimeException("Skill not found");
-    }
-
-	   
-}}
+    
+    
+    
+}

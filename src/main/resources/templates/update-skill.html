@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Skill</title>
+</head>
+<body>
+<h1>Update Skill</h1>
+
+<form action="#" th:action="@{/user/update-skill}" method="post" th:object="${skill}">
+    <input type="hidden" th:field="*{skillid}"/>
+    <label>Proficiency:</label>
+    <input type="text" th:field="*{proficiency}"/><br>
+    <label>Certification Name:</label>
+    <input type="text" th:field="*{certificationname}"/><br>
+    <label>Training Days:</label>
+    <input type="number" th:field="*{trainingdays}"/><br>
+    <input type="submit" value="Save"/>
+</form>
+
+</body>
+</html>

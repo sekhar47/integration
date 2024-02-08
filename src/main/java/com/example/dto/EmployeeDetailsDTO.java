@@ -1,5 +1,6 @@
 package com.example.dto;
 
+import com.example.entity.EmployeeSkill;
 import com.example.entity.Skills;
 
 public class EmployeeDetailsDTO {
@@ -21,10 +22,22 @@ public class EmployeeDetailsDTO {
     private String password;
     private String privilage;
     
-	
+    private EmployeeSkill employeeSkill; // Change 'Skills' to 'EmployeeSkill'
+
     private Skills skills;
 
-    public Skills getSkills() {
+    
+    
+    
+    public EmployeeSkill getEmployeeSkill() {
+		return employeeSkill;
+	}
+
+	public void setEmployeeSkill(EmployeeSkill employeeSkill) {
+		this.employeeSkill = employeeSkill;
+	}
+
+	public Skills getSkills() {
         return skills;
     }
 
@@ -126,9 +139,11 @@ public class EmployeeDetailsDTO {
 	}
 	
 	
+	
 	public EmployeeDetailsDTO(Integer skillid, String empid, String name, String empemail, String empmobile,
 			String skillname, String domain, String subdomain, String proficiency, String certificationname,
-			boolean availability, boolean reviewed, int trainingdays, String password, String privilage) {
+			boolean availability, boolean reviewed, int trainingdays, String password, String privilage,
+			EmployeeSkill employeeSkill, Skills skills) {
 		super();
 		this.skillid = skillid;
 		this.empid = empid;
@@ -145,7 +160,10 @@ public class EmployeeDetailsDTO {
 		this.trainingdays = trainingdays;
 		this.password = password;
 		this.privilage = privilage;
+		this.employeeSkill = employeeSkill;
+		this.skills = skills;
 	}
+
 	public EmployeeDetailsDTO() {
 		super();
 		// TODO Auto-generated constructor stub
