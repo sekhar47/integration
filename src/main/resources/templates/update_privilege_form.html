@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Emp Id</th>
+            <th>Email</th>
+            <th>Privilege</th>
+            <th>Action</th>
+        </tr>
+        <!-- Loop through users and display details -->
+        <tr th:each="user : ${users}">
+            <td th:text="${user.empid}"></td>
+            <td th:text="${user.empemail}"></td>
+            <td th:text="${user.privilage}"></td>
+            <td>
+                <button onclick="openModal('${user.empid}', '${user.privilage}')">Edit Privilege</button>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Privilege</h2>
+        <form id="updatePrivilegeForm" action="/updatePrivilege" method="post">
+	"${user.empid}"    
+<label for="privilege">Privilege:</label>
+    <select name="privilege" id="privilege">
+        <option value="USER">USER</option>
+        <option value="ADMIN">ADMIN</option>
+    </select>
+    <button id="saveBtn" type="submit">Save</button>
+</form>
+
+
+        </div>
+    </div>
+
+<script>
+   function openModal(empId, privilege) {
+    document.getElementById('empid').value = empid;
+    document.getElementById('privilage').value = privilage;
+    document.getElementById('updatePrivilegeForm').submit(); // Submit the form directly
+}
+
+
+    var modal = document.getElementById('myModal');
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // Submit the form when the "Save" button is clicked
+    document.getElementById('saveBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        console.log("Submitting form...");
+        console.log("Emp Id: " + document.getElementById('empid').value);
+        console.log("Privilege: " + document.getElementById('privilage').value);
+        document.getElementById('updatePrivilegeForm').submit(); // Submit the form
+    });
+</script>
+
+</body>
+</html>

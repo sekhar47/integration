@@ -2,7 +2,11 @@ package com.example.userskill;
 
 
 import com.example.dto.EmployeeDetailsDTO;
+import com.example.entity.EmployeeSkill;
 import com.example.repository.Empskillrepo;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +23,6 @@ public class EmployeeSkillService {
     public EmployeeDetailsDTO getUserSkills(String empid) {
         return empskillrepo.findUserSkills(empid);
     }
+
+
 }

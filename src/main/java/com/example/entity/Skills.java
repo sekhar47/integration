@@ -1,10 +1,14 @@
 package com.example.entity;
 
 
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +28,16 @@ public class Skills {
 	private String subdomain; 
 	private String domain;
 	
-	
+	   @OneToMany(mappedBy = "skills", cascade = CascadeType.ALL)
+	    private Set<EmployeeSkill> employeeSkills;
+	   
+	   
+	public Set<EmployeeSkill> getEmployeeSkills() {
+		return employeeSkills;
+	}
+	public void setEmployeeSkills(Set<EmployeeSkill> employeeSkills) {
+		this.employeeSkills = employeeSkills;
+	}
 	public Integer getSkillid() {
 		return skillid;
 	}
@@ -49,12 +62,17 @@ public class Skills {
 	public void setDomain(String domain) {
 		this.domain = domain;
 	}
-	public Skills(Integer skillid, String skillname, String subdomain, String domain) {
+	
+	
+	
+	public Skills(Integer skillid, String skillname, String subdomain, String domain,
+			Set<EmployeeSkill> employeeSkills) {
 		super();
 		this.skillid = skillid;
 		this.skillname = skillname;
 		this.subdomain = subdomain;
 		this.domain = domain;
+		this.employeeSkills = employeeSkills;
 	}
 	public Skills() {
 		super();

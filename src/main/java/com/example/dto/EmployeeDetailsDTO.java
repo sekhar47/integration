@@ -25,10 +25,7 @@ public class EmployeeDetailsDTO {
     private EmployeeSkill employeeSkill; // Change 'Skills' to 'EmployeeSkill'
 
     private Skills skills;
-
-    
-    
-    
+   
     public EmployeeSkill getEmployeeSkill() {
 		return employeeSkill;
 	}

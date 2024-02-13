@@ -60,9 +60,9 @@ public interface Empskillrepo extends JpaRepository<EmployeeSkill, EmpID>{
     Optional<EmployeeSkill> findById_EmpidAndId_Skillid(String empId, Integer skillId);
     Optional<EmployeeSkill> findById(EmpID id);
 
+    
     @Transactional
     @Modifying
     @Query("UPDATE EmployeeSkill es SET es.reviewed = true WHERE es.id.empid = :empid AND es.id.skillid = :skillid")
     void reviewSkill(@Param("empid") String empid, @Param("skillid") Integer skillid);  
-
 }

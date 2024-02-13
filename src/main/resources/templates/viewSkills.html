@@ -5,8 +5,8 @@
     <title>View Skills</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
-     <style>
+
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -53,12 +53,18 @@
             background-color: #0056b3;
         }
     </style>
-    
+
+    <script>
+        function confirmDelete() {
+            var confirmation = confirm("Delete Skills Carefully. The associated data for employees will also be affected. Are you sure?");
+            return confirmation;
+        }
+    </script>
 </head>
 <body>
     <h2>View Skills</h2>
-    
-    <form th:action="@{/deleteSkills}" method="post">
+
+    <form th:action="@{/deleteSkills}" method="post" onsubmit="return confirmDelete()">
         <table border="1">
             <thead>
                 <tr>
@@ -79,14 +85,18 @@
                 </tr>
             </tbody>
         </table>
-        
+
         <button type="submit">Delete Selected</button>
     </form>
-    
-   <a th:href="@{/createDomainPage}">Create Domain</a>
-  <a th:href="@{/createSubdomainPage}">Create Subdomain</a>
+
+    <div th:if="${param.deleted}">
+        <p>Delete successful! The associated data for employees has been affected.</p>
+    </div>
+
+    <a th:href="@{/createDomainPage}">Create Domain</a>
+    <a th:href="@{/createSubdomainPage}">Create Subdomain</a>
     <a th:href="@{/createSkillPage}">Create Skill</a>
-    
+
     <!-- Include jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

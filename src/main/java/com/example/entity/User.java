@@ -2,13 +2,16 @@ package com.example.entity;
 
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -30,10 +33,11 @@ public class User {
 	private String empemail; 
 	private String password;
 	private String empmobile;
-//	private String domain;
 	private Boolean availability;
 	private String privilage;
 	
+
+    @Column(name = "designation")
 	private String designation;
 
 	private String token;
@@ -43,6 +47,19 @@ public class User {
 	@Lob
 	@Column(name = "profile_picture", columnDefinition="LONGBLOB")
 	private byte[] profilePicture;
+
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<EmployeeSkill> employeeSkills;
+	
+	
+	public Set<EmployeeSkill> getEmployeeSkills() {
+		return employeeSkills;
+	}
+
+	public void setEmployeeSkills(Set<EmployeeSkill> employeeSkills) {
+		this.employeeSkills = employeeSkills;
+	}
 
 	// Getter and setter methods for the "designation" field
 	public String getDesignation() {
@@ -124,8 +141,10 @@ public class User {
 		this.tokenCreationDate = tokenCreationDate;
 	}
 
+	
 	public User(String empid, String name, String empemail, String password, String empmobile, Boolean availability,
-			String privilage, byte[] profilePicture) {
+			String privilage, String designation, String token, LocalDateTime tokenCreationDate, byte[] profilePicture,
+			Set<EmployeeSkill> employeeSkills) {
 		super();
 		this.empid = empid;
 		this.name = name;
@@ -134,8 +153,13 @@ public class User {
 		this.empmobile = empmobile;
 		this.availability = availability;
 		this.privilage = privilage;
+		this.designation = designation;
+		this.token = token;
+		this.tokenCreationDate = tokenCreationDate;
 		this.profilePicture = profilePicture;
+		this.employeeSkills = employeeSkills;
 	}
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
