@@ -52,14 +52,14 @@ public class SkillService {
 	                repository.save(existingSkillWithEmptySubdomain);
 	            } else {
 	                // If no existing row with an empty subdomain is found, create a new row
-	                Skills newSkill = new Skills();
+	                Skills newSkill = new Skills(null, subdomain, subdomain, subdomain, null);
 	                newSkill.setDomain(domain);
 	                newSkill.setSubdomain(subdomain);
 	                repository.save(newSkill);
 	            }
 	        } else {
 	            // If no existing row with the specified domain is found, create a new row
-	            Skills newSkill = new Skills();
+	            Skills newSkill = new Skills(null, subdomain, subdomain, subdomain, null);
 	            newSkill.setDomain(domain);
 	            newSkill.setSubdomain(subdomain);
 	            repository.save(newSkill);
@@ -103,7 +103,7 @@ public class SkillService {
     
     
     public void saveDomain(String domain) {
-        Skills skillDomain = new Skills();
+        Skills skillDomain = new Skills(null, domain, domain, domain, null);
         skillDomain.setDomain(domain);
         repository.save(skillDomain);
     }

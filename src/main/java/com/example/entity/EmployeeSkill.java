@@ -102,10 +102,9 @@ public class EmployeeSkill {
 			this.reviewed = reviewed;
 			this.trainingdays = trainingdays;
 		}
-		public EmployeeSkill() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
+		/*
+		 * public EmployeeSkill() { super(); // TODO Auto-generated constructor stub }
+		 */
 		
 	    
 	    

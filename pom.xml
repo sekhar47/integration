@@ -82,11 +82,7 @@
     <scope>provided</scope>
 </dependency>
 
-<dependency>
-    <groupId>org.apache.pdfbox</groupId>
-    <artifactId>pdfbox</artifactId>
-    <version>2.0.24</version> <!-- Choose the appropriate version -->
-</dependency>
+
 <dependency>
     <groupId>org.apache.pdfbox</groupId>
     <artifactId>fontbox</artifactId>
@@ -160,11 +156,7 @@
     <version>2.0.27</version> <!-- Check for the latest version on the Apache PDFBox website -->
 </dependency>
 
-		<dependency>
-        <groupId>org.modelmapper</groupId>
-        <artifactId>modelmapper</artifactId>
-        <version>2.4.3</version> <!-- Use the latest version available -->
-    </dependency>
+	
 		
 		
 	</dependencies>
@@ -176,6 +168,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>your-application</finalName>
 	</build>
 
 </project>

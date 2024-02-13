@@ -45,7 +45,7 @@ public class SkillController {
         model.addAttribute("domains", domains);
 
         // Add an empty Skills object to the model
-        model.addAttribute("skill", new Skills());
+        model.addAttribute("skill", new Skills(null, null, null, null, null));
 
         return "createSkill";
     }

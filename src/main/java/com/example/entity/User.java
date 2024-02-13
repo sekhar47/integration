@@ -160,10 +160,9 @@ public class User {
 		this.employeeSkills = employeeSkills;
 	}
 
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	/*
+	 * public User() { super(); // TODO Auto-generated constructor stub }
+	 */
 	
 	
 

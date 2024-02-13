@@ -79,7 +79,7 @@ public class UserSkillService {
             throw new RuntimeException("User already has the same skill");
         }
 
-        EmployeeSkill employeeSkill = new EmployeeSkill();
+        EmployeeSkill employeeSkill = new EmployeeSkill(null, user, skill, empId, null, empId, null, 0);
         employeeSkill.setId(new EmpID(empId, skill.getSkillid()));
         employeeSkill.setUser(user);
         employeeSkill.setSkills(skill);

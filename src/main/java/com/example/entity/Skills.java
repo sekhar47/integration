@@ -74,10 +74,9 @@ public class Skills {
 		this.domain = domain;
 		this.employeeSkills = employeeSkills;
 	}
-	public Skills() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	/*
+	 * public Skills() { super(); // TODO Auto-generated constructor stub }
+	 */
 	
 	
 	
