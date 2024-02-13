@@ -75,20 +75,6 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     
 
-    public void updateProfilePicture(String empid, MultipartFile profilePicture) {
-        try {
-            User currentUser = userRepository.findByEmpid(empid);
-            if (currentUser != null) {
-                currentUser.setProfilePicture(profilePicture.getBytes());
-                userRepository.save(currentUser);
-            } else {
-                // Handle user not found
-            }
-        } catch (IOException e) {
-            // Handle exception
-            e.printStackTrace();
-        }
-    }
 
 
     // Implement method to get currently logged in user
@@ -105,12 +91,28 @@ public class UserProfileServiceImpl implements UserProfileService {
     
 }
 
-	@Override
-	public void updateProfilePicture(byte[] profilePicture, String originalFilename) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void updateProfilePicture(byte[] profilePicture, String empid) {
+        User currentUser = userRepository.findByEmpid(empid);
+        if (currentUser != null) {
+            currentUser.setProfilePicture(profilePicture);
+            userRepository.save(currentUser);
+        } else {
+            // Handle user not found
+        }
+    }
 
+    
+    @Override
+    public void updateDesignation(String empid, String designation) {
+        User user = userRepository.findByEmpid(empid);
+        if (user != null) {
+            user.setDesignation(designation);
+            userRepository.save(user);
+        } else {
+            // Handle user not found
+        }
+    }
 	
     
 }

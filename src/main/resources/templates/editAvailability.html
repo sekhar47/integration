@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Include necessary CSS and JS files -->
+</head>
+
+<body>
+    <h1>Edit Profile</h1>
+    <form action="/updateProfile" method="post">
+		<!-- Add this code to allow users to upload profile pictures -->
+<div>
+    <label for="profilePicture">Profile Picture:</label>
+    <input type="file" id="profilePicture" name="profilePicture">
+</div>
+
+<!-- Display the profile picture if available -->
+<img id="profilePicturePreview" src="data:image/jpeg;base64,${user.profilePicture != null ? #strings.bytesToBase64(user.profilePicture) : ''}" alt="Profile Picture" />
+
+		
+		<div>
+            <label for="empmobile">Phone:</label>
+            <input type="text" id="empmobile" name="empmobile" th:value="${user.empid}" disabled>
+        </div>
+		  <div>
+            <label for="empmobile">Name:</label>
+            <input type="text" id="empmobile" name="empmobile" th:value="${user.name}" disabled>
+        </div>
+        <div>
+            <label for="empmobile">Email:</label>
+            <input type="text" id="empmobile" name="empmobile" th:value="${user.empemail}" disabled>
+        </div>
+        
+        <div>
+    <label for="designation">Designation:</label>
+    <input type="text" id="designation" name="designation" th:value="${user.designation}">
+</div>
+
+        <div>
+            <label for="empmobile">Phone:</label>
+            <input type="text" id="empmobile" name="empmobile" th:value="${user.empmobile}">
+        </div>
+        <div>
+            <label for="availability">Availability:</label>
+            <select name="availability" id="availability">
+                <option value="true" th:selected="${user.availability == true}">Available</option>
+                <option value="false" th:selected="${user.availability == false}">In Project</option>
+            </select>
+        </div>
+        
+        
+        <br>
+        <button type="submit">Save</button>
+    </form>
+</body>
+
+</html>

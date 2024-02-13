@@ -11,7 +11,7 @@ public interface UserProfileService {
     User getUserByEmpid(String loggedInEmpId);
 	void saveOrUpdateUser(User user);
 	void saveUser(User user);
-//	void updateProfilePicture(byte[] profilePicture);
-	void updateProfilePicture(byte[] profilePicture, String originalFilename);
-	void updateProfilePicture(String loggedInEmpId, MultipartFile profilePicture);
+    void updateProfilePicture(byte[] profilePicture, String empid);
+	void updateDesignation(String empid, String designation);
+
 }

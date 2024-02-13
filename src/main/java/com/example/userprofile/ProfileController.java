@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -44,33 +45,46 @@ public class ProfileController {
         return "profile";
     }
 
-//    @PostMapping("/profile/update")
-//    public String updateProfile(@RequestParam("profilePicture") MultipartFile profilePicture, Principal principal) {
-//        try {
-//            String loggedInEmpId = principal.getName(); // Get the logged-in user's empid (username)
-//            User user = userService.getUserByEmpid(loggedInEmpId);
-//
-//            if (user != null && profilePicture != null && !profilePicture.isEmpty()) {
-//                user.setProfilePicture(profilePicture.getBytes());
-//                userService.updateUserProfile(user);
-//            }
-//        } catch (IOException e) {
-//            // Handle exception
-//        }
-//        return "redirect:/profile";
-//    }
-    
 
+
+
+    @GetMapping("/editAvailability")
+    public String editAvailability(Model model, Principal principal) {
+        String loggedInEmpId = principal.getName();
+        User user = userService.getUserByEmpid(loggedInEmpId);
+        model.addAttribute("user", user);
+        return "editAvailability";
+    }
+
+    // Method to handle update profile request
+    @PostMapping("/updateProfile")
+    public String updateProfile(@ModelAttribute User updatedUser, Principal principal) {
+        String loggedInEmpId = principal.getName();
+        User currentUser = userService.getUserByEmpid(loggedInEmpId);
+        
+        // Update only necessary fields
+       
+        currentUser.setEmpmobile(updatedUser.getEmpmobile());
+        currentUser.setAvailability(updatedUser.getAvailability());
+        currentUser.setDesignation(updatedUser.getDesignation()); // Update designation
+        userService.updateUserProfile(currentUser);
+        return "redirect:/profile";
+    }
+    
+    
     @PostMapping("/uploadProfilePicture")
-    public ResponseEntity<String> uploadProfilePicture(@RequestParam("profilePicture") MultipartFile profilePicture, Principal principal) {
+    public String uploadProfilePicture(@RequestParam("profilePicture") MultipartFile profilePicture, Principal principal) {
         try {
             String loggedInEmpId = principal.getName();
-            userService.updateProfilePicture(loggedInEmpId, profilePicture);
-            return ResponseEntity.ok("Profile picture uploaded successfully");
+            byte[] pictureBytes = profilePicture.getBytes();
+            userService.updateProfilePicture(pictureBytes, loggedInEmpId);
+            return "redirect:/profile";
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload profile picture");
+            // Handle error
+            return "error";
         }
     }
+    
 
 }

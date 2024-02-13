@@ -133,16 +133,12 @@
 <body>
     <div class="container emp-profile">
         <div class="row">
-            <div class="col-md-4">
-                <div class="profile-img">
-                    <img id="profilePicturePreview" src="data:image/jpeg;base64,${user.profilePicture != null ? #strings.bytesToBase64(user.profilePicture) : ''}" alt="Profile Picture" />
-                    <div class="file btn btn-lg btn-primary">
-                        Change Photo
-                        <input type="file" id="profilePicture" name="profilePicture" />
-                        <button type="button" class="btn btn-primary" id="saveProfilePictureBtn">Save Picture</button>
-                    </div>
-                </div>
+           <div class="col-md-4">
+            <div class="profile-img">
+                <!-- Update the src attribute to correctly display the profile picture -->
+                <img id="profilePicture" src="data:image/jpeg;base64,${#strings.bytesToBase64(user.profilePicture)}" alt="Profile Picture" />
             </div>
+        </div>
                  <div class="col-md-8">
                 <div class="profile-head">
                     <h5>
@@ -150,8 +146,10 @@
                         <span th:text="${user.name}"></span>
                     </h5>
                     <h6>
-                        Associate Software Engineer-Trainee
-                    </h6>
+ 
+                    <!-- Display designation from the database -->
+                    <span th:text="${user.designation}"></span>
+                                  </h6>
                     <br>
                     <br>
                     <br>
@@ -200,8 +198,21 @@
             </div>
         </div>
     </div>
- <script>
-    </script>
+    <!-- Add this button in the profile section of profile.html -->
+<button class="btn btn-primary" id="editAvailabilityBtn">Edit Profile</button>
+
+<!-- Add this script at the bottom of the profile.html file -->
+<script>
+    // Function to redirect to the edit availability page
+    function editAvailability() {
+        window.location.href = "/editAvailability";
+    }
+
+    // Attach click event listener to the edit button
+    document.getElementById("editAvailabilityBtn").addEventListener("click", function() {
+        editAvailability();
+    });
+</script>
 </body>
 
 </html>

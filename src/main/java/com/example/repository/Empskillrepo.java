@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,8 @@ import com.example.entity.EmpID;
 import com.example.entity.EmployeeSkill;
 import com.example.entity.Skills;
 import com.example.entity.User;
+
+import jakarta.transaction.Transactional;
 
 
 
@@ -57,5 +60,9 @@ public interface Empskillrepo extends JpaRepository<EmployeeSkill, EmpID>{
     Optional<EmployeeSkill> findById_EmpidAndId_Skillid(String empId, Integer skillId);
     Optional<EmployeeSkill> findById(EmpID id);
 
-    
+    @Transactional
+    @Modifying
+    @Query("UPDATE EmployeeSkill es SET es.reviewed = true WHERE es.id.empid = :empid AND es.id.skillid = :skillid")
+    void reviewSkill(@Param("empid") String empid, @Param("skillid") Integer skillid);  
+
 }

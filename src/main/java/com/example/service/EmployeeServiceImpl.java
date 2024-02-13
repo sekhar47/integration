@@ -12,8 +12,10 @@ import com.example.repository.Userrepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.web.client.ResourceAccessException;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -90,8 +92,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         }).orElse(null);
     }
     
+    @Override
+    public void reviewSkill(String empid, Integer skillid) {
+        Optional<EmployeeSkill> optionalEmployeeSkill = employeeSkillRepository.findById_EmpidAndId_Skillid(empid, skillid);
+        if (optionalEmployeeSkill.isPresent()) {
+            EmployeeSkill employeeSkill = optionalEmployeeSkill.get();
+            employeeSkill.setReviewed(true);
+            employeeSkillRepository.save(employeeSkill);
+        } else {
+            throw new NoSuchElementException("Employee skill not found.");
+        }
+    }
 
-
-	
-
+   
 }

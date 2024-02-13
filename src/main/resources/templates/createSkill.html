@@ -1,4 +1,44 @@
 <!-- Add the jQuery library -->
+
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <form th:action="@{/saveSkill}" method="post" th:object="${skill}">
@@ -18,7 +58,8 @@
     <input type="text" id="skillname" name="skillname" required th:field="*{skillname}">
     <br>
     
-    <input type="submit" value="Create Skill">
+    <input type="submit" id="submitButton" value="Create Skill">
+
 
     <!-- jQuery script to load subdomains based on the selected domain -->
     <script th:inline="javascript">
@@ -50,6 +91,98 @@
                     });
                 }
             }
+        });
+        /*]]>*/
+    </script>
+    
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        // Add event listener for changes in the subdomain dropdown
+        $('#subdomain').change(function () {
+            // Enable or disable the submit button based on the subdomain selection
+            if ($(this).val() === '') {
+                $('#submitButton').prop('disabled', true); // Disable the submit button
+            } else {
+                $('#submitButton').prop('disabled', false); // Enable the submit button
+            }
+        });
+
+        // Trigger the change event initially to set the initial state of the submit button
+        $('#subdomain').trigger('change');
+    });
+    /*]]>*/
+</script>
+
+</form>
+
+<form th:action="@{/updateSkillName}" method="post">
+    <label for="updateDomain">Select Domain:</label>
+    <select id="updateDomain" name="domain" onchange="loadSubdomains()">
+        <option th:each="d : ${domains}" th:value="${d}" th:text="${d}"></option>
+    </select>
+    <br>
+    
+    <label for="updateSubdomain">Select Subdomain:</label>
+    <select id="updateSubdomain" name="subdomain">
+        <!-- Options will be dynamically loaded using jQuery -->
+    </select>
+    <br>
+
+    <label for="oldSkillName">Old Skill Name:</label>
+    <select id="oldSkillName" name="oldSkillName">
+        <!-- Options will be dynamically loaded using jQuery -->
+    </select>
+    <br>
+    
+    <label for="newSkillName">New Skill Name:</label>
+    <input type="text" id="newSkillName" name="newSkillName" required>
+    <br>
+    
+    <input type="submit" value="Update Skill Name">
+
+    <!-- jQuery script to load subdomains, old skill names, and update skill names based on the selected domain and subdomain -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            // Add event listener for changes in the domain dropdown
+            $('#updateDomain').change(function () {
+                loadSubdomains();
+            });
+
+            // Function to load subdomains
+            function loadSubdomains() {
+                var selectedDomain = $('#updateDomain').val();
+                if (selectedDomain) {
+                    $.get('/getSubdomains/' + selectedDomain, function (subdomains) {
+                        $('#updateSubdomain').empty();
+                        $.each(subdomains, function (index, subdomain) {
+                            $('#updateSubdomain').append('<option value="' + subdomain + '">' + subdomain + '</option>');
+                        });
+                        // Once subdomains are loaded, also load old skills based on selected domain and subdomain
+                        loadOldSkills();
+                    });
+                }
+            }
+
+            // Function to load old skills based on domain and subdomain
+            function loadOldSkills() {
+                var domain = $('#updateDomain').val();
+                var subdomain = $('#updateSubdomain').val();
+                if (domain && subdomain) {
+                    $.get('/getOldSkills/' + domain + '/' + subdomain, function (oldSkills) {
+                        $('#oldSkillName').empty();
+                        $.each(oldSkills, function (index, oldSkill) {
+                            $('#oldSkillName').append('<option value="' + oldSkill + '">' + oldSkill + '</option>');
+                        });
+                    });
+                }
+            }
+
+            // Add event listener for changes in the subdomain dropdown
+            $('#updateSubdomain').change(function () {
+                loadOldSkills();
+            });
         });
         /*]]>*/
     </script>

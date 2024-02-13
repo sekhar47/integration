@@ -4,6 +4,61 @@
     <meta charset="UTF-8">
     <title>Create Subdomain</title>
 </head>
+
+ <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .error-message {
+            color: red;
+        }
+    </style>
 <body>
     <h2>Create Subdomain</h2>
     
@@ -24,6 +79,59 @@
         <input type="submit" value="Create Subdomain">
     </form>
     
+    
+  
+    <form th:action="@{/updateSubdomain}" method="post">
+    <label for="updateDomain">Select Domain:</label>
+    <select id="updateDomain" name="domain">
+        <option th:each="domain : ${domains}" th:value="${domain}" th:text="${domain}"></option>
+    </select>
+    <br>
+    
+    <label for="existingSubdomain">Select Subdomain to Update:</label>
+    <select id="existingSubdomain" name="existingSubdomain">
+        <!-- Subdomains will be populated dynamically based on the selected domain using JavaScript -->
+    </select>
+    <br>
+
+    <label for="updatedSubdomain">Updated Subdomain:</label>
+    <input type="text" id="updatedSubdomain" name="updatedSubdomain" required>
+    <br>
+    
+    <input type="submit" value="Update Subdomain">
+</form>
+
+    
+    
     <a th:href="@{/viewSkillsPage}">Back to View Skills</a>
+    
+      <!-- JavaScript to populate subdomains based on the selected domain -->
+   <script type="text/javascript">
+    // Get references to the domain and subdomain dropdowns
+    var updateDomainDropdown = document.getElementById('updateDomain');
+    var existingSubdomainDropdown = document.getElementById('existingSubdomain');
+
+    // Event listener for when the domain dropdown value changes
+    updateDomainDropdown.addEventListener('change', function() {
+        // Clear existing options in the existing subdomain dropdown
+        existingSubdomainDropdown.innerHTML = '';
+
+        // Fetch subdomains for the selected domain from the server
+        fetch('/getSubdomains/' + updateDomainDropdown.value)
+            .then(response => response.json())
+            .then(data => {
+                // Populate the existing subdomain dropdown with the fetched subdomains
+                data.forEach(subdomain => {
+                    var option = document.createElement('option');
+                    option.text = subdomain;
+                    option.value = subdomain;
+                    existingSubdomainDropdown.add(option);
+                });
+            })
+            .catch(error => console.error('Error fetching subdomains:', error));
+    });
+</script>
+
+    
 </body>
 </html>

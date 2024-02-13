@@ -1,6 +1,8 @@
 package com.example.entity;
 
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,11 +34,24 @@ public class User {
 	private Boolean availability;
 	private String privilage;
 	
+	private String designation;
+
+	private String token;
+	@Column(columnDefinition = "TIMESTAMP")
+	private LocalDateTime tokenCreationDate;
+	
 	@Lob
 	@Column(name = "profile_picture", columnDefinition="LONGBLOB")
 	private byte[] profilePicture;
 
-	 
+	// Getter and setter methods for the "designation" field
+	public String getDesignation() {
+	    return designation;
+	}
+
+	public void setDesignation(String designation) {
+	    this.designation = designation;
+	}
 	
 	public byte[] getProfilePicture() {
 		return profilePicture;
@@ -74,12 +89,8 @@ public class User {
 	public void setEmpmobile(String empmobile) {
 		this.empmobile = empmobile;
 	}
-//	public String getDomain() {
-//		return domain;
-//	}
-//	public void setDomain(String domain) {
-//		this.domain = domain;
-//	}
+
+
 	public Boolean getAvailability() {
 	    // Check if availability is null, return false if it is
 	    return availability != null ? availability : false;
@@ -97,6 +108,22 @@ public class User {
 	
 	
 	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public LocalDateTime getTokenCreationDate() {
+		return tokenCreationDate;
+	}
+
+	public void setTokenCreationDate(LocalDateTime tokenCreationDate) {
+		this.tokenCreationDate = tokenCreationDate;
+	}
+
 	public User(String empid, String name, String empemail, String password, String empmobile, Boolean availability,
 			String privilage, byte[] profilePicture) {
 		super();

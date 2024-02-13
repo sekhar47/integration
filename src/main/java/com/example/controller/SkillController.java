@@ -26,8 +26,10 @@ public class SkillController {
     }
 
     @GetMapping("/createDomainPage")
-    public String createDomainPage() {
-        return "createDomain";
+    public String createDomainPage(Model model) {
+        List<String> domains = service.getDistinctDomains();
+        model.addAttribute("domains", domains);
+        return "createDomain"; // Assuming "createDomain" is your HTML template name
     }
 
     @GetMapping("/createSubdomainPage")
@@ -49,7 +51,13 @@ public class SkillController {
     }
 
     @PostMapping("/saveSkill")
-    public String saveSkill(@ModelAttribute Skills skill) {
+    public String saveSkill(@ModelAttribute Skills skill, RedirectAttributes redirectAttributes) {
+        // Check if subdomain is null or empty
+    	 if (skill.getSubdomain() == null) {
+    	        // Redirect back to the skill creation page with an error message
+    	        redirectAttributes.addFlashAttribute("errorMessage", "Please select a subdomain.");
+    	        return "redirect:/createSkillPage";
+    	    }
         // Check if a skill with the same name, domain, and subdomain already exists
         Skills existingSkill = service.getSkillByNameAndDomainAndSubdomain(skill.getSkillname(), skill.getDomain(), skill.getSubdomain());
 
@@ -90,6 +98,7 @@ public class SkillController {
 
         return "redirect:/viewSkillsPage";
     }
+
 
 
     
@@ -152,5 +161,68 @@ public class SkillController {
         return "redirect:/viewSkillsPage";
     }
 
+    
+ // Update an existing domain
+    @PostMapping("/updateDomain")
+    public String updateDomain(@RequestParam("existingDomain") String existingDomain, @RequestParam("updatedDomain") String updatedDomain) {
+        // Check if the updated domain is different from the existing one
+        if (!existingDomain.equalsIgnoreCase(updatedDomain)) {
+            // Check if the updated domain already exists (case-insensitive)
+            if (service.existsDomainIgnoreCase(updatedDomain)) {
+                // If the updated domain already exists, you can handle this case, e.g., by redirecting with an error message
+                return "redirect:/createDomainPage?error=Domain already exists";
+            }
+            
+            // Update the domain
+            service.updateDomain(existingDomain, updatedDomain);
+        }
+        
+        return "redirect:/viewSkillsPage";
+    }
+
+    
+    @PostMapping("/updateSubdomain")
+    public String updateSubdomain(@RequestParam("domain") String domain, @RequestParam("existingSubdomain") String existingSubdomain, @RequestParam("updatedSubdomain") String updatedSubdomain) {
+        // Check if the updated subdomain is different from the existing one
+        if (!existingSubdomain.equalsIgnoreCase(updatedSubdomain)) {
+            // Check if the updated subdomain already exists for the given domain (case-insensitive)
+            if (service.existsSubdomainIgnoreCase(domain, updatedSubdomain)) {
+                // If the updated subdomain already exists, you can handle this case, e.g., by redirecting with an error message
+                return "redirect:/createSubdomainPage?error=Subdomain already exists";
+            }
+            
+            // Update the subdomain
+            service.updateSubdomain(domain, existingSubdomain, updatedSubdomain);
+        }
+        
+        return "redirect:/viewSkillsPage";
+    }
+
+    
+//    update skillname
+    @GetMapping("/updateSkillNamePage")
+    public String updateSkillNamePage(Model model) {
+        List<String> domains = service.getDistinctDomains();
+        model.addAttribute("domains", domains);
+        return "updateSkillName"; // Assuming "updateSkillName" is your HTML template name
+    }
+
+    
+
+    @GetMapping("/getOldSkills/{domain}/{subdomain}")
+    @ResponseBody
+    public List<String> getOldSkills(@PathVariable String domain, @PathVariable String subdomain) {
+        return service.getOldSkills(domain, subdomain);
+    }
+
+    @PostMapping("/updateSkillName")
+    public String updateSkillName(@RequestParam("domain") String domain,
+                                  @RequestParam("subdomain") String subdomain,
+                                  @RequestParam("oldSkillName") String oldSkillName,
+                                  @RequestParam("newSkillName") String newSkillName) {
+    	service.updateSkillName(domain, subdomain, oldSkillName, newSkillName);
+        return "redirect:/viewSkillsPage";
+    }
+    
 
 }

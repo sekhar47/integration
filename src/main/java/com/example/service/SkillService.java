@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.example.entity.Skills;
 import com.example.repository.Skillrepo;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class SkillService {
 	@Autowired
@@ -127,14 +129,14 @@ public class SkillService {
         return repository.findSkillNamesBySubdomain(subdomain);
     }
 
-    public void updateSkillName(String domain, String subdomain, String oldSkillName, String newSkillName) {
-        // Implement logic to update skill name in the database
-        Skills skill = (Skills) repository.findByDomainAndSubdomainAndSkillname(domain, subdomain, oldSkillName);
-        if (skill != null) {
-            skill.setSkillname(newSkillName);
-            repository.save(skill);
-        }
-    }
+//    public void updateSkillName(String domain, String subdomain, String oldSkillName, String newSkillName) {
+//        // Implement logic to update skill name in the database
+//        Skills skill = (Skills) repository.findByDomainAndSubdomainAndSkillname(domain, subdomain, oldSkillName);
+//        if (skill != null) {
+//            skill.setSkillname(newSkillName);
+//            repository.save(skill);
+//        }
+//    }
     
     
     public String deleteSkill(int skillid) {
@@ -144,6 +146,40 @@ public class SkillService {
     
     public void updateSkill(Skills skill) {
         repository.save(skill);
+    }
+
+    
+    
+//   updatedomain
+    @Transactional
+    public void updateDomain(String existingDomain, String updatedDomain) {
+        // Perform any necessary validation or business logic
+        
+        // Update the domain
+    	repository.updateDomain(existingDomain, updatedDomain);
+    }
+    
+    
+//    update subdomain
+    @Transactional
+    public void updateSubdomain(String domain, String existingSubdomain, String updatedSubdomain) {
+        // Perform any necessary validation or business logic
+        
+        // Update the subdomain
+        repository.updateSubdomain(domain, existingSubdomain, updatedSubdomain);
+    }
+
+    
+//    update killname
+
+   
+    public List<String> getOldSkills(String domain, String subdomain) {
+        return repository.findOldSkills(domain, subdomain);
+    }
+    
+    @Transactional
+    public void updateSkillName(String domain, String subdomain, String oldSkillName, String newSkillName) {
+    	repository.updateSkillName(domain, subdomain, oldSkillName, newSkillName);
     }
 
     

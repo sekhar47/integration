@@ -5,9 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/report.css">
     <title>Employee Report</title>
-    <style>
-        /* Your CSS styles here */
-        
+   <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .employee-details {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .employee-details img {
+            margin-right: 20px;
+            border-radius: 50%;
+            max-width: 100%;
+        }
+
+        .employee-info {
+            font-size: 16px;
+        }
+
+        .employee-info span {
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: rgb(0, 0, 0);
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .download-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -37,7 +98,7 @@
                 <th>Domain</th>
                 <th>Subdomain</th>
                 <th>Skill Name</th>
-                <th>Proficiency</th>
+                <th>Rating</th>
                 <th>Reviewed</th>
                 <th>Training Days</th>
             </tr>
