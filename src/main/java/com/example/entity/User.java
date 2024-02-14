@@ -19,8 +19,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+/*
+ * @AllArgsConstructor
+ * 
+ * @NoArgsConstructor
+ */
 @Table(name = "Employee", uniqueConstraints = @UniqueConstraint(columnNames = "empemail"))
 @Entity
 public class User {

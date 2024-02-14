@@ -15,8 +15,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+/*
+ * @AllArgsConstructor
+ * 
+ * @NoArgsConstructor
+ */
 @Table(name = "Skills")
 @Entity
 public class Skills {

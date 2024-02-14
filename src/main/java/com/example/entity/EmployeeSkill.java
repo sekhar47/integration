@@ -18,8 +18,11 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+/*
+ * @AllArgsConstructor
+ * 
+ * @NoArgsConstructor
+ */
 @Transactional
 @Table(name = "EmployeeSkill")
 @Entity
@@ -102,6 +105,7 @@ public class EmployeeSkill {
 			this.reviewed = reviewed;
 			this.trainingdays = trainingdays;
 		}
+	
 		/*
 		 * public EmployeeSkill() { super(); // TODO Auto-generated constructor stub }
 		 */
